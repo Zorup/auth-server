@@ -64,7 +64,7 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     protected CommonResult noRefreshTokenException(HttpServletRequest request, NoRefreshTokenException e){
         log.info("noRefreshTokenException:"+e.toString());
-        return responseService.getFailResult(Integer.parseInt(getMessage("noRefreshTokenException.code")), getMessage("noRefreshTokenException.msg"));
+        return responseService.getFailResult(Integer.parseInt(getMessage("noRefreshToken.code")), getMessage("noRefreshToken.msg"));
     }
 
     @ExceptionHandler({InvalidRefreshTokenException.class, ExpiredJwtException.class})
