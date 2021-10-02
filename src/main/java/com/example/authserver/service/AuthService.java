@@ -101,7 +101,7 @@ public class AuthService {
 
     @Transactional
     public void logout(Long userId, HttpServletResponse response){
-        // Redis에서 삭제
+        // Redis에서 Refresh 토큰 삭제
         redisRepo.deleteRefreshToken(userId);
     }
 
