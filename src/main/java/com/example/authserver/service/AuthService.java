@@ -103,6 +103,8 @@ public class AuthService {
     public void logout(Long userId, HttpServletResponse response){
         // Redis에서 Refresh 토큰 삭제
         redisRepo.deleteRefreshToken(userId);
+        // 쿠키에서 access토큰 삭제
+        tokenCookieOff(response, CookieName.ACCESS);
     }
 
     public boolean reIssueAccessToken(Enumeration<String> headers, HttpServletResponse response){
