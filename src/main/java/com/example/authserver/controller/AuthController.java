@@ -28,6 +28,7 @@ public class AuthController {
     @PostMapping(value="/singin")
     public CommonResult singIn(@RequestBody UserDto param){
         log.info("call signin Api - " + param.getLoginId());
+        authService.signIn(param);
         return responseService.getSuccessResult();
     }
 
