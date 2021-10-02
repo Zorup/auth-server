@@ -24,6 +24,8 @@ spring:
     basename: i18n/exception
     encoding: UTF-8
 
+noti-disable-api-url: http://localhost:8084/v1/user/
+
 ---
 
 
