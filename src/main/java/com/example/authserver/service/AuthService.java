@@ -157,7 +157,7 @@ public class AuthService {
     }
 
     private Optional<String> extractToken(Enumeration<String> headers){
-        String type = "bearer";
+        String type = "refresh";
         while(headers.hasMoreElements()){
             String header = headers.nextElement();
             if (header.toLowerCase().startsWith(type.toLowerCase()))
