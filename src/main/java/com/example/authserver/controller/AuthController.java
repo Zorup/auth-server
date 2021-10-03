@@ -39,9 +39,11 @@ public class AuthController {
     }
 
     @PostMapping(value="/login")
-    public SingleResult<UserDto.ForResponse> login(@RequestBody UserDto.ForLogin param, HttpServletResponse response){
+    public SingleResult<UserDto.ForResponse> login(@RequestBody UserDto.ForLogin param, HttpServletRequest request, HttpServletResponse response){
         log.info("call login Api");
-        return responseService.getSingleResult(authService.login(param, response));
+
+        String clientIp = request.getHeader("X-Forwarded-For");
+        return responseService.getSingleResult(authService.login(param, clientIp, response));
     }
 
     @PostMapping(value="/logout/user/{userId}")
@@ -63,8 +65,10 @@ public class AuthController {
         log.info("call refresh Api");
 
         Enumeration<String> headers = request.getHeaders("Authorization");
-        boolean result = authService.reIssueAccessToken(headers, response);
+        String clientIp = request.getHeader("X-Forwarded-For");
+        authService.reIssueAccessToken(headers, clientIp, response);
 
         return responseService.getSuccessResult();
     }
+
 }

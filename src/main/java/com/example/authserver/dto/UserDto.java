@@ -73,6 +73,7 @@ public class UserDto {
         private String loginId;
         private Role role;
         private String refreshToken;
+        private String clientIp;
 
         public static ForRedis of(User user){   // @Builder로 생성한 빌더클래스 활용, Entity to Dto 전환용. UserRedisDto.of(user) 로 사용 가능
             return new ForRedisBuilder()

@@ -74,6 +74,12 @@ public class ExceptionAdvice {
         return responseService.getFailResult(Integer.parseInt(getMessage("invalidRefreshToken.code")), getMessage("invalidRefreshToken.msg"));
     }
 
+    @ExceptionHandler(DifferentClientException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    protected CommonResult differentClientException(HttpServletRequest request, Exception e) {
+        log.info("differentClientException:"+e.toString());
+        return responseService.getFailResult(Integer.parseInt(getMessage("differentClient.code")), getMessage("differentClient.msg"));
+    }
 
     // code정보에 해당하는 메시지를 조회합니다.
     private String getMessage(String code) {

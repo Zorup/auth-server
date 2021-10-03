@@ -15,6 +15,9 @@ alreadyExistId:
 invalidRefreshToken:
   code: "-2001"
   msg: "refresh 토큰이 만료되었거나 잘못된 refresh 토큰입니다."
-noRefreshToken:
+differentClient:
   code: "-2002"
+  msg: "ip주소가 refresh 토큰을 발급받은 client와 다릅니다."
+noRefreshToken:
+  code: "-2003"
   msg: "request header에 refresh 토큰이 없습니다."
