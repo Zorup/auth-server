@@ -68,7 +68,7 @@ public class AuthService {
     }
 
     @Transactional  // redisRepo에서 예외발생시에도 rollback됨
-    public UserDto.ForResponse login(UserDto.ForLogin param, HttpServletResponse response){
+    public UserDto.ForResponse login(UserDto.ForLogin param, String clientIp, HttpServletResponse response){
 
         // 없는 아이디면 예외발생
         User user = userJpaRepo.findByLoginId(param.getLoginId())
@@ -86,6 +86,7 @@ public class AuthService {
 
         // Redis에 insert
         tokenInfo.setRefreshToken(refreshToken);
+        tokenInfo.setClientIp(clientIp);
         redisRepo.insertRefreshToken(tokenInfo);
 
         // RefreshToken은 body에 함께 내려줌
@@ -107,7 +108,7 @@ public class AuthService {
         tokenCookieOff(response, CookieName.ACCESS);
     }
 
-    public boolean reIssueAccessToken(Enumeration<String> headers, HttpServletResponse response){
+    public boolean reIssueAccessToken(Enumeration<String> headers, String clientIp, HttpServletResponse response){
 
         // 헤더에서 토큰 추출
         String tokenIn = extractToken(headers).orElseThrow(NoRefreshTokenException::new);
@@ -117,13 +118,15 @@ public class AuthService {
         UserDto.ForRedis valueInRedis = redisRepo.findRefreshToken(parsed.getUserId())
                 .orElseThrow(InvalidRefreshTokenException::new);
 
-        String tokenInRedis = valueInRedis.getRefreshToken();
-
         // redis 속 토큰과 같은지 비교
+        String tokenInRedis = valueInRedis.getRefreshToken();
         if (!parsed.getRefreshToken().equals(tokenInRedis))
             throw new InvalidRefreshTokenException();
 
-        // TODO UserDto.ForRedis에 ip정보 추가시 여기에 ip비교 로직 추가
+        // refresh토큰 발급받았던 ip와 같은지 비교
+        String ipInRedis = valueInRedis.getClientIp();
+        if (!clientIp.equals(ipInRedis))
+            throw new DifferentClientException();
 
         // access토큰 발급
         String accessToken = jwtTokenProvider.createAccessToken(valueInRedis);
