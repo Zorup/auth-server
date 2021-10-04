@@ -31,7 +31,7 @@ public class AuthController {
     private final Environment env;
 
     // 회원가입
-    @PostMapping(value="/singin")
+    @PostMapping(value="/signin")
     public CommonResult singIn(@RequestBody UserDto param){
         log.info("call signin Api - " + param.getLoginId());
         authService.signIn(param);
