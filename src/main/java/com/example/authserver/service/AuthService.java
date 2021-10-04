@@ -62,7 +62,8 @@ public class AuthService {
             param.setPosition("없음");
 
         param.setRole(Role.ROLE_USER);  // TODO 현재 모든 유저가 ROLE_USER 권한. admin관련기능 생성시 권한에따라 회원가입 로직 분리 필요
-
+        param.setPassword(passwordEncoder.encode(param.getPassword())); // 패스워드 암호화
+        
         User user = User.of(param);
         userJpaRepo.save(user);
     }
