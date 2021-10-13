@@ -2,8 +2,6 @@ package com.example.authserver.dto;
 
 import com.example.authserver.domain.Role;
 import com.example.authserver.domain.User;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.*;
 
 @AllArgsConstructor // 빌더패턴에 사용
@@ -66,7 +64,7 @@ public class UserDto {
     @Setter
     @Builder
     public static class ForRedis {
-        public final static long accessTokenValidTime = 3 * 60;
+        public final static long accessTokenValidTime =  5 * 60;
         public final static long refreshTokenValidTime = 5 * 60; // 테스트 위해 5분으로 해둠
 
         private Long userId;
